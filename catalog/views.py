@@ -36,17 +36,21 @@ def index(request):
 
 
 class BookListView(generic.ListView):
+    """
+    Generic class-based view for a list of books.
+    """
     model = Book
+    paginate_by = 10
 
-    def get_queryset(self):
-        return Book.objects.filter(title__icontains='war')[:5]  # Get 5 books containing the title war
+    # def get_queryset(self):
+    #     return Book.objects.filter(title__icontains='war')[:5]  # Get 5 books containing the title war
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(BookListView, self).get_context_data(**kwargs)
-        # Get the blog from id and add it to the context
-        context['some_data'] = 'This is just some data'
-        return context
+    # def get_context_data(self, **kwargs):
+    #     # Call the base implementation first to get a context
+    #     context = super(BookListView, self).get_context_data(**kwargs)
+    #     # Get the blog from id and add it to the context
+    #     context['some_data'] = 'This is just some data'
+    #     return context
 
 
 class BookDetailView(generic.DetailView):
