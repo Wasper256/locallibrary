@@ -22,12 +22,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-]
-urlpatterns += [
+    url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^catalog/', include('catalog.urls')),
-]
-# Add URL maps to redirect the base URL to our application
-urlpatterns += [
     url(r'^$', RedirectView.as_view(url='/catalog/', permanent=True)),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
