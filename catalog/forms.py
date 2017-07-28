@@ -1,14 +1,21 @@
+"""File, that describes forms functionality."""
+import datetime  # for checking renewal date range.
+
 from django import forms
-from .models import BookInstance
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-import datetime  #for checking renewal date range.
+
+from .models import BookInstance
 
 
 class RenewBookForm(forms.Form):
-    renewal_date = forms.DateField(help_text="Enter a date between now and 4 weeks (default 3).")
+    """Renew forms description."""
+
+    renewal_date = forms.DateField(
+        help_text="Enter a date between now and 4 weeks (default 3).")
 
     def clean_renewal_date(self):
+        """Clean renewal functionality."""
         data = self.cleaned_data['renewal_date']
 
         # Check date is not in past.
@@ -17,13 +24,18 @@ class RenewBookForm(forms.Form):
 
         # Check date is in range librarian allowed to change (+4 weeks).
         if data > datetime.date.today() + datetime.timedelta(weeks=4):
-            raise ValidationError(_('Invalid date - renewal more than 4 weeks ahead'))
+            raise ValidationError(_(
+                'Invalid date - renewal more than 4 weeks ahead'))
 
         # Remember to always return the cleaned data.
         return data
 
     class Meta:
+        """Class to enter renewal date."""
+
         model = BookInstance
         fields = ['due_back', ]
         labels = {'due_back': _('Renewal date'), }
-        help_texts = {'due_back': _('Enter a date between now and 4 weeks (default 3).'), }
+        help_texts = {
+            'due_back': _(
+                'Enter a date between now and 4 weeks (default 3).'), }

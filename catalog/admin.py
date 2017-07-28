@@ -1,7 +1,10 @@
+"""Administration settings here."""
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from .models import Author, Genre, Book, BookInstance, Language
+
 from django.contrib import admin
+
+from .models import Author, Book, BookInstance, Genre, Language
 
 # Register your models here.
 
@@ -27,11 +30,13 @@ class AuthorAdmin(admin.ModelAdmin):
 
     Defines:
      - fields to be displayed in list view (list_display)
-     - orders fields in detail view (fields), grouping the date fields horizontally
+     - orders fields in detail view (fields), grouping the date fields
+        horizontally
      - adds inline addition of books in author view (inlines)
     """
 
-    list_display = ('last_name', 'first_name', 'date_of_birth', 'date_of_death')
+    list_display = (
+        'last_name', 'first_name', 'date_of_birth', 'date_of_death')
     fields = ['first_name', 'last_name', ('date_of_birth', 'date_of_death')]
     inlines = [BooksInline]
 
@@ -55,7 +60,11 @@ class BookAdmin(admin.ModelAdmin):
     inlines = [BooksInstanceInline]
 
     def display_genre(self):
-        """Create a string for the Genre. This is required to display genre in Admin."""
+        """
+        Create a string for the Genre.
+
+        This is required to display genre in Admin.
+        """
         return ', '.join([genre.name for genre in self.genre.all()[:3]])
     display_genre.short_description = 'Genre'
 
